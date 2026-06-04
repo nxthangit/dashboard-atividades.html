@@ -48,8 +48,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .nav-item i{font-size:15px;flex-shrink:0;}
 .nav-badge{margin-left:auto;background:var(--gray-light);color:var(--text-secondary);font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:10px;font-weight:500;}
 .nav-item.active .nav-badge{background:rgba(26,107,220,.12);color:var(--blue);}
-
-/* FOLDERS IN NAV */
 .folder-row{display:flex;align-items:center;border-radius:8px;overflow:hidden;}
 .folder-btn{display:flex;align-items:center;gap:8px;padding:7px 10px;flex:1;cursor:pointer;color:var(--text-secondary);font-size:13px;transition:all .15s;border:none;background:none;text-align:left;min-width:0;}
 .folder-btn:hover{background:var(--bg);color:var(--text);}
@@ -58,10 +56,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .folder-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .folder-actions{display:none;gap:2px;padding-right:6px;}
 .folder-row:hover .folder-actions{display:flex;}
-.fol-act-btn{width:22px;height:22px;border-radius:5px;border:none;background:none;cursor:pointer;color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;font-size:12px;}
+.fol-act-btn{width:22px;height:22px;border-radius:5px;border:none;background:none;cursor:pointer;color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;font-size:13px;}
 .fol-act-btn:hover{background:var(--gray-light);color:var(--text);}
 .fol-act-btn.del:hover{background:var(--red-light);color:var(--red);}
-
 .sidebar-footer{padding:12px 14px;border-top:1px solid var(--border-subtle);}
 .sync-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-tertiary);padding:4px 6px;}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;}
@@ -69,73 +66,81 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sync-dot.error{background:var(--red);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* MAIN */
+/* TOPBAR */
 .main{flex:1;display:flex;flex-direction:column;min-width:0;}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:10;}
-.topbar-left{display:flex;align-items:center;gap:16px;flex:1;}
-.page-title{font-size:16px;font-weight:600;color:var(--text);white-space:nowrap;display:flex;align-items:center;gap:8px;}
-.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 12px;flex:1;max-width:340px;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:10;}
+.topbar-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0;}
+.page-title{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;display:flex;align-items:center;gap:7px;}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 12px;flex:1;max-width:320px;}
 .topbar-search i{color:var(--text-tertiary);font-size:15px;}
 .topbar-search input{border:none;background:none;font-family:var(--font);font-size:13px;color:var(--text);outline:none;width:100%;}
 .topbar-search input::placeholder{color:var(--text-tertiary);}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.btn-primary{display:flex;align-items:center;gap:7px;padding:8px 16px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.btn-primary{display:flex;align-items:center;gap:7px;padding:7px 15px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .btn-primary:hover{background:#155bbf;}
-.btn-icon-top{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:16px;transition:all .15s;}
+.btn-icon-top{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:15px;transition:all .15s;}
 .btn-icon-top:hover{background:var(--bg);color:var(--text);}
 
-.content{padding:24px 28px;flex:1;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-sm);}
+/* CONTENT */
+.content{padding:20px 24px;flex:1;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow-sm);}
 .kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.kpi-label{font-size:12px;font-weight:500;color:var(--text-secondary);}
-.kpi-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.kpi-num{font-size:28px;font-weight:600;color:var(--text);letter-spacing:-.5px;font-family:var(--mono);}
-.kpi-sub{font-size:11px;color:var(--text-tertiary);margin-top:3px;}
+.kpi-label{font-size:11.5px;font-weight:500;color:var(--text-secondary);}
+.kpi-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.kpi-num{font-size:26px;font-weight:600;color:var(--text);letter-spacing:-.5px;font-family:var(--mono);}
+.kpi-sub{font-size:11px;color:var(--text-tertiary);margin-top:2px;}
 
-.board-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+/* BOARD CONTROLS */
+.board-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
 .filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
-.pill{display:flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:all .15s;user-select:none;}
+.pill{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:all .15s;user-select:none;}
 .pill:hover{border-color:#c5d4f0;color:var(--text);}
 .pill.active{background:var(--blue-light);border-color:#b0c8f5;color:var(--blue);font-weight:500;}
 .pill i{font-size:13px;}
 .view-toggle{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-.vbtn{padding:6px 12px;font-size:13px;background:none;border:none;cursor:pointer;color:var(--text-tertiary);transition:all .15s;}
+.vbtn{padding:6px 11px;font-size:13px;background:none;border:none;cursor:pointer;color:var(--text-tertiary);transition:all .15s;}
 .vbtn.active{background:var(--blue-light);color:var(--blue);}
 .vbtn:hover:not(.active){background:var(--bg);}
 
 /* BOARD */
-.board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start;}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start;}
 .col-wrap{min-width:0;}
-.col-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;border-bottom:none;}
+.col-header{display:flex;align-items:center;gap:8px;padding:9px 13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;border-bottom:none;}
 .col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .col-name{font-size:13px;font-weight:500;flex:1;}
-.col-count{font-size:11px;font-family:var(--mono);background:var(--bg);color:var(--text-tertiary);padding:1px 7px;border-radius:8px;}
-.col-body{background:var(--bg);border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);min-height:80px;padding:10px;display:flex;flex-direction:column;gap:8px;}
-.act-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 14px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm);}
+.col-count{font-size:11px;font-family:var(--mono);background:var(--bg);color:var(--text-tertiary);padding:1px 7px;border-radius:8px;font-weight:500;}
+.col-body{background:var(--bg);border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);min-height:80px;padding:8px;display:flex;flex-direction:column;gap:7px;}
+
+/* CARDS */
+.act-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 13px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm);}
 .act-card:hover{border-color:#c5d4f0;box-shadow:var(--shadow);}
 .act-card.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,107,220,.08);}
-.act-card-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.folder-tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;padding:1px 7px;border-radius:10px;font-weight:500;margin-bottom:6px;}
+.act-card-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;}
 .act-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;flex:1;}
-.badge-priority{font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;flex-shrink:0;}
+.badge-priority{font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;letter-spacing:.2px;flex-shrink:0;}
 .pri-alta{background:var(--red-light);color:var(--red);}
 .pri-media{background:var(--amber-light);color:var(--amber);}
 .pri-baixa{background:var(--green-light);color:var(--green);}
-.act-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.act-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:7px;}
 .meta-item{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--text-secondary);}
 .meta-item i{font-size:12px;}
-.folder-tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;padding:1px 7px;border-radius:10px;font-weight:500;margin-bottom:6px;}
-.progress-bar{height:3px;background:var(--border-subtle);border-radius:3px;overflow:hidden;margin-top:4px;}
-.progress-fill{height:100%;border-radius:3px;transition:width .3s;}
-.empty-col{text-align:center;padding:24px 12px;color:var(--text-tertiary);font-size:12px;}
-.empty-col i{font-size:24px;display:block;margin-bottom:6px;opacity:.4;}
 .overdue-tag{display:inline-block;margin-left:6px;font-size:10px;background:var(--red-light);color:var(--red);padding:1px 5px;border-radius:5px;vertical-align:middle;font-weight:600;}
+.progress-bar{height:3px;background:var(--border-subtle);border-radius:3px;overflow:hidden;margin-top:3px;}
+.progress-fill{height:100%;border-radius:3px;transition:width .3s;}
+
+/* STEPS MINI (no card) */
+.steps-mini{display:flex;gap:3px;margin-top:6px;align-items:center;}
+.step-mini-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);flex-shrink:0;transition:all .15s;}
+.step-mini-dot.done{background:var(--green);border-color:var(--green);}
+.steps-mini-label{font-size:11px;color:var(--text-tertiary);margin-left:4px;}
 
 /* LIST VIEW */
-#list-view{display:none;}
+.list-view{display:none;}
 table.activity-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);}
-table.activity-table th{padding:10px 16px;font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;background:var(--bg);border-bottom:1px solid var(--border);text-align:left;}
-table.activity-table td{padding:12px 16px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border-subtle);vertical-align:middle;}
+table.activity-table th{padding:9px 14px;font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;background:var(--bg);border-bottom:1px solid var(--border);text-align:left;}
+table.activity-table td{padding:11px 14px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border-subtle);vertical-align:middle;}
 table.activity-table tr:last-child td{border-bottom:none;}
 table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 .status-badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:20px;}
@@ -143,78 +148,104 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 .s-pendente{background:var(--amber-light);color:var(--amber);}
 .s-concluido{background:var(--green-light);color:var(--green);}
 .s-arquivado{background:var(--gray-light);color:var(--gray);}
+.empty-col{text-align:center;padding:24px 12px;color:var(--text-tertiary);font-size:12px;}
+.empty-col i{font-size:22px;display:block;margin-bottom:5px;opacity:.4;}
 
 /* DETAIL PANEL */
 .detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:40;display:none;backdrop-filter:blur(2px);}
 .detail-overlay.open{display:block;}
-.detail-panel{position:fixed;top:0;right:0;width:390px;height:100vh;background:var(--surface);border-left:1px solid var(--border);box-shadow:var(--shadow-lg);z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+.detail-panel{position:fixed;top:0;right:0;width:400px;height:100vh;background:var(--surface);border-left:1px solid var(--border);box-shadow:var(--shadow-lg);z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
 .detail-panel.open{transform:translateX(0);}
-.detail-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;}
+.detail-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;}
 .detail-head-info{flex:1;min-width:0;}
-.detail-head-info h3{font-size:15px;font-weight:600;margin-bottom:4px;color:var(--text);}
-.detail-actions{display:flex;gap:6px;flex-shrink:0;}
-.btn-sm{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:15px;transition:all .15s;}
+.detail-head-info h3{font-size:15px;font-weight:600;margin-bottom:5px;color:var(--text);}
+.detail-actions{display:flex;gap:5px;}
+.btn-sm{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:14px;transition:all .15s;}
 .btn-sm:hover{background:var(--bg);color:var(--text);}
 .btn-sm.danger:hover{background:var(--red-light);color:var(--red);border-color:#fca5a5;}
-.detail-body{flex:1;overflow-y:auto;padding:20px;}
-.detail-section{margin-bottom:22px;}
+.detail-body{flex:1;overflow-y:auto;padding:18px;}
+.detail-section{margin-bottom:20px;}
 .detail-section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text-tertiary);margin-bottom:10px;}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .detail-field label{font-size:11px;color:var(--text-tertiary);display:block;margin-bottom:3px;}
 .detail-field span{font-size:13px;font-weight:500;color:var(--text);}
 .detail-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;}
 .progress-large{height:6px;background:var(--border-subtle);border-radius:6px;overflow:hidden;margin-top:8px;}
-.progress-large .fill{height:100%;border-radius:6px;}
+.progress-large .fill{height:100%;border-radius:6px;transition:width .4s;}
 .move-section{margin-top:16px;}
-.move-label{font-size:11px;color:var(--text-tertiary);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;}
+.move-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text-tertiary);margin-bottom:8px;}
 .move-btns{display:flex;flex-wrap:wrap;gap:6px;}
-.move-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-family:var(--font);font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
+.move-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-family:var(--font);font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
 .move-btn:hover{background:var(--surface);border-color:#c5d4f0;color:var(--blue);}
+
+/* ── STEPS (etapas) ── */
+.steps-section{margin-top:4px;}
+.steps-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.steps-progress-info{font-size:12px;color:var(--text-secondary);}
+.steps-progress-info strong{color:var(--text);font-family:var(--mono);}
+.btn-add-step{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:7px;border:1px solid var(--border);background:none;font-family:var(--font);font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
+.btn-add-step:hover{background:var(--blue-light);color:var(--blue);border-color:#b0c8f5;}
+.steps-list{display:flex;flex-direction:column;gap:6px;}
+.step-item{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg);border:1px solid var(--border-subtle);border-radius:8px;transition:all .15s;}
+.step-item:hover{border-color:var(--border);background:var(--surface);}
+.step-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);background:var(--surface);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.step-check.done{background:var(--green);border-color:var(--green);}
+.step-check.done::after{content:'';width:5px;height:9px;border:2px solid #fff;border-left:none;border-top:none;transform:rotate(45deg) translateY(-1px);display:block;}
+.step-label{flex:1;font-size:13px;color:var(--text);transition:all .15s;}
+.step-label.done{text-decoration:line-through;color:var(--text-tertiary);}
+.step-weight{font-size:11px;font-family:var(--mono);color:var(--text-tertiary);background:var(--gray-light);padding:2px 6px;border-radius:5px;flex-shrink:0;}
+.step-del{width:22px;height:22px;border-radius:5px;border:none;background:none;cursor:pointer;color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;font-size:13px;opacity:0;transition:all .15s;}
+.step-item:hover .step-del{opacity:1;}
+.step-del:hover{background:var(--red-light);color:var(--red);}
+.add-step-row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+.add-step-input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--surface);outline:none;}
+.add-step-input:focus{border-color:var(--blue);}
+.add-step-weight{width:70px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-family:var(--mono);font-size:12px;color:var(--text);background:var(--surface);outline:none;text-align:center;}
+.add-step-weight:focus{border-color:var(--blue);}
+.btn-step-save{padding:7px 12px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:12px;cursor:pointer;}
+.btn-step-cancel{padding:7px 10px;background:none;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:12px;color:var(--text-secondary);cursor:pointer;}
+.steps-empty{font-size:12px;color:var(--text-tertiary);text-align:center;padding:14px;background:var(--bg);border-radius:8px;border:1px dashed var(--border);}
+.auto-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;background:#ede9fe;color:#7c3aed;padding:2px 7px;border-radius:8px;font-weight:500;margin-top:4px;}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow-lg);width:100%;max-width:520px;max-height:92vh;overflow-y:auto;padding:24px;}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.modal-head h2{font-size:16px;font-weight:600;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 110px;gap:14px;}
-.form-group{margin-bottom:14px;}
+.modal{background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow-lg);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;padding:22px;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.modal-head h2{font-size:15px;font-weight:600;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-group{margin-bottom:13px;}
 .form-group label{font-size:11.5px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:5px;}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s;}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);}
-.form-group textarea{resize:vertical;min-height:76px;}
-.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
-.btn-cancel{padding:8px 18px;border:1px solid var(--border);border-radius:8px;background:none;font-family:var(--font);font-size:13px;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
+.form-group textarea{resize:vertical;min-height:72px;}
+.form-info{font-size:11px;color:var(--text-tertiary);margin-top:4px;display:flex;align-items:center;gap:4px;}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);}
+.btn-cancel{padding:7px 16px;border:1px solid var(--border);border-radius:8px;background:none;font-family:var(--font);font-size:13px;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
 .btn-cancel:hover{background:var(--bg);}
-.btn-save{padding:8px 20px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
+.btn-save{padding:7px 18px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
 .btn-save:hover{background:#155bbf;}
-
-/* FOLDER MODAL COLOR PICKER */
-.color-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
-.color-opt{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s;}
-.color-opt.selected{border-color:var(--text);transform:scale(1.15);}
-.color-opt:hover{transform:scale(1.1);}
+.color-picker{display:flex;gap:8px;flex-wrap:wrap;}
+.color-opt{width:26px;height:26px;border-radius:50%;cursor:pointer;transition:transform .15s;border:2px solid transparent;}
+.color-opt:hover{transform:scale(1.15);}
+.color-opt.selected{border-color:var(--text);transform:scale(1.1);}
 
 /* CONFIRM */
 .confirm-box{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:150;display:none;align-items:center;justify-content:center;}
 .confirm-box.open{display:flex;}
-.confirm-inner{background:var(--surface);border-radius:var(--radius-lg);padding:24px;max-width:340px;width:90%;box-shadow:var(--shadow-lg);text-align:center;}
-.confirm-inner h3{font-size:15px;font-weight:600;margin-bottom:8px;}
-.confirm-inner p{font-size:13px;color:var(--text-secondary);margin-bottom:20px;}
+.confirm-inner{background:var(--surface);border-radius:var(--radius-lg);padding:22px;max-width:320px;width:90%;box-shadow:var(--shadow-lg);text-align:center;}
+.confirm-inner h3{font-size:15px;font-weight:600;margin-bottom:7px;}
+.confirm-inner p{font-size:13px;color:var(--text-secondary);margin-bottom:18px;}
 .confirm-btns{display:flex;gap:10px;justify-content:center;}
-.btn-danger{padding:8px 20px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:200;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(10px);transition:all .25s;display:flex;align-items:center;gap:8px;}
+.btn-danger{padding:7px 18px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:500;z-index:200;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(8px);transition:all .25s;display:flex;align-items:center;gap:8px;}
 .toast.show{opacity:1;transform:translateY(0);}
 
 @media(max-width:900px){.sidebar{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.board{grid-template-columns:repeat(2,1fr);}.detail-panel{width:100%;}}
-@media(max-width:600px){.content{padding:16px;}.topbar{padding:0 16px;}.board{grid-template-columns:1fr;}}
+@media(max-width:600px){.content{padding:14px;}.topbar{padding:0 14px;}.board{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
 <div id="loading-screen">
   <div class="loading-logo"><i class="ti ti-layout-kanban"></i></div>
   <div class="loading-spinner"></div>
@@ -230,22 +261,15 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
       </div>
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-section">
-        <span class="nav-section-label">Visão geral</span>
-      </div>
+      <div class="nav-section"><span class="nav-section-label">Visão geral</span></div>
       <button class="nav-item active" onclick="navClick('board',this)"><i class="ti ti-layout-kanban"></i>Painel<span class="nav-badge" id="nb-total">0</span></button>
       <button class="nav-item" onclick="navClick('em_andamento',this)"><i class="ti ti-loader"></i>Em andamento<span class="nav-badge" id="nb-em_andamento">0</span></button>
       <button class="nav-item" onclick="navClick('pendente',this)"><i class="ti ti-clock"></i>Pendentes<span class="nav-badge" id="nb-pendente">0</span></button>
       <button class="nav-item" onclick="navClick('concluido',this)"><i class="ti ti-circle-check"></i>Concluídos<span class="nav-badge" id="nb-concluido">0</span></button>
-      <div class="nav-section">
-        <span class="nav-section-label">Pastas</span>
-        <button class="nav-add-btn" onclick="openFolderModal()" title="Nova pasta"><i class="ti ti-plus"></i></button>
-      </div>
-      <div id="folder-nav"></div>
-      <div class="nav-section">
-        <span class="nav-section-label">Arquivo</span>
-      </div>
+      <div class="nav-section"><span class="nav-section-label">Arquivo</span></div>
       <button class="nav-item" onclick="navClick('arquivado',this)"><i class="ti ti-archive"></i>Arquivados<span class="nav-badge" id="nb-arquivado">0</span></button>
+      <div class="nav-section"><span class="nav-section-label">Pastas</span><button class="nav-add-btn" onclick="openFolderModal()" title="Nova pasta"><i class="ti ti-plus"></i></button></div>
+      <div id="folder-nav"></div>
     </nav>
     <div class="sidebar-footer">
       <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">Sincronizado</span></div>
@@ -263,7 +287,6 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
         <button class="btn-primary" onclick="openModal()"><i class="ti ti-plus"></i>Nova atividade</button>
       </div>
     </div>
-
     <div class="content">
       <div class="kpi-grid" id="kpi-grid"></div>
       <div class="board-controls">
@@ -280,16 +303,19 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
         </div>
       </div>
       <div id="board" class="board"></div>
-      <div id="list-view"></div>
+      <div id="list-view" class="list-view"></div>
     </div>
   </div>
 </div>
 
-<!-- DETAIL -->
+<!-- DETAIL PANEL -->
 <div class="detail-overlay" id="detail-overlay" onclick="closeDetail()"></div>
 <div class="detail-panel" id="detail-panel">
   <div class="detail-head">
-    <div class="detail-head-info"><h3 id="dp-title"></h3><div id="dp-badge"></div></div>
+    <div class="detail-head-info">
+      <h3 id="dp-title"></h3>
+      <div id="dp-badge"></div>
+    </div>
     <div class="detail-actions">
       <button class="btn-sm" id="btn-edit-detail" title="Editar"><i class="ti ti-edit"></i></button>
       <button class="btn-sm danger" id="btn-delete-detail" title="Excluir"><i class="ti ti-trash"></i></button>
@@ -300,10 +326,28 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
     <div class="detail-section"><div class="detail-section-label">Descrição</div><div class="detail-desc" id="dp-desc"></div></div>
     <div class="detail-section"><div class="detail-section-label">Detalhes</div><div class="detail-grid" id="dp-grid"></div></div>
     <div class="detail-section">
-      <div class="detail-section-label">Progresso</div>
+      <div class="detail-section-label">Progresso geral</div>
       <div style="display:flex;align-items:center;gap:10px">
         <div class="progress-large" style="flex:1"><div class="fill" id="dp-prog-fill"></div></div>
         <span style="font-size:13px;font-weight:600;font-family:var(--mono)" id="dp-prog-val"></span>
+      </div>
+      <div id="dp-auto-badge"></div>
+    </div>
+    <!-- ETAPAS -->
+    <div class="detail-section steps-section">
+      <div class="steps-header">
+        <div class="detail-section-label" style="margin-bottom:0">Etapas</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="steps-progress-info" id="dp-steps-info"></span>
+          <button class="btn-add-step" onclick="showAddStepRow()"><i class="ti ti-plus"></i>Adicionar</button>
+        </div>
+      </div>
+      <div class="steps-list" id="dp-steps-list"></div>
+      <div id="add-step-row" style="display:none" class="add-step-row">
+        <input class="add-step-input" id="new-step-label" placeholder="Nome da etapa..." onkeydown="if(event.key==='Enter')saveNewStep()"/>
+        <input class="add-step-weight" id="new-step-weight" type="number" min="1" max="100" value="1" title="Peso"/>
+        <button class="btn-step-save" onclick="saveNewStep()">OK</button>
+        <button class="btn-step-cancel" onclick="hideAddStepRow()">✕</button>
       </div>
     </div>
     <div class="move-section"><div class="move-label">Mover para</div><div class="move-btns" id="dp-move-btns"></div></div>
@@ -328,12 +372,16 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
       <div class="form-group"><label>Data de início</label><input type="date" id="f-inicio"/></div>
       <div class="form-group" style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end">
         <div><label>Prazo (data)</label><input type="date" id="f-prazo"/></div>
-        <div><label>Horário</label><input type="time" id="f-prazo-hora" value="23:59" style="width:90px"/></div>
+        <div><label>Horário</label><input type="time" id="f-prazo-hora" value="23:59" style="width:88px"/></div>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group"><label>Pasta</label><select id="f-folder"><option value="">— Sem pasta —</option></select></div>
-      <div class="form-group"><label>Progresso (%)</label><input type="number" id="f-prog" min="0" max="100" value="0"/></div>
+      <div class="form-group">
+        <label>Progresso (%)</label>
+        <input type="number" id="f-prog" min="0" max="100" value="0"/>
+        <div class="form-info"><i class="ti ti-info-circle"></i>Calculado automaticamente se houver etapas</div>
+      </div>
     </div>
     <div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveActivity()">Salvar atividade</button></div>
   </div>
@@ -341,13 +389,10 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 
 <!-- MODAL PASTA -->
 <div class="modal-overlay" id="folder-modal-overlay">
-  <div class="modal" style="max-width:380px">
+  <div class="modal" style="max-width:360px">
     <div class="modal-head"><h2 id="folder-modal-title">Nova pasta</h2><button class="btn-sm" onclick="closeFolderModal()"><i class="ti ti-x"></i></button></div>
     <div class="form-group"><label>Nome da pasta *</label><input type="text" id="f-folder-name" placeholder="Ex: Rotinas, Projetos, Urgente..."/></div>
-    <div class="form-group">
-      <label>Cor</label>
-      <div class="color-picker" id="color-picker"></div>
-    </div>
+    <div class="form-group"><label>Cor</label><div class="color-picker" id="color-picker"></div></div>
     <div class="modal-footer"><button class="btn-cancel" onclick="closeFolderModal()">Cancelar</button><button class="btn-save" onclick="saveFolder()">Salvar pasta</button></div>
   </div>
 </div>
@@ -355,15 +400,13 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 <!-- CONFIRM -->
 <div class="confirm-box" id="confirm-box">
   <div class="confirm-inner">
-    <h3 id="confirm-title">Confirmar</h3>
-    <p id="confirm-msg"></p>
+    <h3 id="confirm-title">Confirmar</h3><p id="confirm-msg"></p>
     <div class="confirm-btns">
       <button class="btn-cancel" onclick="document.getElementById('confirm-box').classList.remove('open')">Cancelar</button>
       <button class="btn-danger" id="confirm-ok">Confirmar</button>
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
 
 <script type="module">
@@ -386,18 +429,17 @@ const folCol=collection(db,"pastas");
 let activities=[], folders=[];
 let currentFilter='todas', currentView='board', currentFolder=null;
 let selectedId=null, editingId=null, editingFolderId=null, selectedColor='#1a6bdc';
-
 const FOLDER_COLORS=['#1a6bdc','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#ea580c','#65a30d','#374151'];
 
-// ── SYNC STATUS ────────────────────────────────────────────────────────────
+// ── SYNC ───────────────────────────────────────────────────────────────────
 function setSyncStatus(s){
   const dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-text');
   dot.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');
   txt.textContent=s==='syncing'?'Sincronizando...':s==='error'?'Erro de conexão':'Sincronizado';
 }
 
-// ── REALTIME LISTENERS ─────────────────────────────────────────────────────
-let actLoaded=false, folLoaded=false;
+// ── REALTIME ───────────────────────────────────────────────────────────────
+let actLoaded=false,folLoaded=false;
 function checkLoaded(){
   if(actLoaded&&folLoaded){
     document.getElementById('loading-screen').style.display='none';
@@ -405,12 +447,10 @@ function checkLoaded(){
     renderFolderNav(); render();
   }
 }
-
 onSnapshot(query(actCol,orderBy("createdAt","asc")),snap=>{
   activities=snap.docs.map(d=>({id:d.id,...d.data()}));
   actLoaded=true; setSyncStatus('ok'); checkLoaded(); render(); renderFolderNav();
 },()=>setSyncStatus('error'));
-
 onSnapshot(query(folCol,orderBy("createdAt","asc")),snap=>{
   folders=snap.docs.map(d=>({id:d.id,...d.data()}));
   folLoaded=true; checkLoaded(); renderFolderNav(); renderFolderSelect(); render();
@@ -432,24 +472,34 @@ const getFolder=id=>folders.find(f=>f.id===id);
 
 function isOverdue(a){
   if(!a.prazo||a.status==='Concluído'||a.status==='Arquivado')return false;
-  // Combina data + hora para comparar com agora
   const hora=a.prazoHora||'23:59';
-  const deadline=new Date(`${a.prazo}T${hora}:00`);
-  return deadline<new Date();
+  return new Date(`${a.prazo}T${hora}:00`)<new Date();
 }
-
 function fmtDeadline(a){
   if(!a.prazo)return'—';
-  const hora=a.prazoHora||'23:59';
-  return`${fmtDate(a.prazo)} ${hora}`;
+  return`${fmtDate(a.prazo)} ${a.prazoHora||'23:59'}`;
+}
+
+// ── STEPS: calcula progresso ponderado ────────────────────────────────────
+function calcProgFromSteps(steps){
+  if(!steps||!steps.length) return null; // sem etapas → usa prog manual
+  const totalWeight=steps.reduce((s,e)=>s+(e.weight||1),0);
+  const doneWeight=steps.filter(e=>e.done).reduce((s,e)=>s+(e.weight||1),0);
+  return totalWeight===0?0:Math.round((doneWeight/totalWeight)*100);
+}
+
+// Retorna progresso efetivo (etapas se existir, senão manual)
+function effectiveProg(a){
+  const fromSteps=calcProgFromSteps(a.steps);
+  return fromSteps!==null?fromSteps:(a.prog||0);
 }
 
 // ── KPIs ───────────────────────────────────────────────────────────────────
 function updateKPIs(){
-  const visible=currentFolder?activities.filter(a=>a.folderId===currentFolder):activities;
+  const vis=currentFolder?activities.filter(a=>a.folderId===currentFolder):activities;
   const cnt={'Em andamento':0,'Pendente':0,'Concluído':0,'Arquivado':0};
-  visible.forEach(a=>cnt[a.status]++);
-  const total=visible.length, overdue=visible.filter(isOverdue).length;
+  vis.forEach(a=>cnt[a.status]++);
+  const total=vis.length, overdue=vis.filter(isOverdue).length;
   document.getElementById('kpi-grid').innerHTML=`
     <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Em andamento</span><div class="kpi-icon" style="background:#e8f0fd;color:#1a6bdc"><i class="ti ti-loader"></i></div></div><div class="kpi-num">${cnt['Em andamento']}</div><div class="kpi-sub">atividades ativas</div></div>
     <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Pendentes</span><div class="kpi-icon" style="background:#fef3c7;color:#d97706"><i class="ti ti-clock"></i></div></div><div class="kpi-num">${cnt['Pendente']}</div><div class="kpi-sub">aguardando início</div></div>
@@ -471,22 +521,20 @@ function renderFolderNav(){
       <button class="folder-btn${currentFolder===f.id?' active':''}" onclick="openFolder('${f.id}')">
         <div class="folder-dot" style="background:${f.color}"></div>
         <span>${f.name}</span>
-        <span class="nav-badge" style="background:${currentFolder===f.id?'rgba(26,107,220,.12)':'var(--gray-light)'};">${activities.filter(a=>a.folderId===f.id).length}</span>
+        <span class="nav-badge">${activities.filter(a=>a.folderId===f.id).length}</span>
       </button>
       <div class="folder-actions">
-        <button class="fol-act-btn" onclick="openFolderModal('${f.id}')" title="Editar"><i class="ti ti-pencil"></i></button>
-        <button class="fol-act-btn del" onclick="confirmDeleteFolder('${f.id}')" title="Excluir"><i class="ti ti-trash"></i></button>
+        <button class="fol-act-btn" onclick="openFolderModal('${f.id}')"><i class="ti ti-pencil"></i></button>
+        <button class="fol-act-btn del" onclick="confirmDeleteFolder('${f.id}')"><i class="ti ti-trash"></i></button>
       </div>
     </div>`).join('');
 }
-
 function renderFolderSelect(){
   const sel=document.getElementById('f-folder');
   const cur=sel.value;
   sel.innerHTML='<option value="">— Sem pasta —</option>'+folders.map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
   if(cur)sel.value=cur;
 }
-
 window.openFolder=function(id){
   currentFolder=id; currentFilter='todas';
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
@@ -501,7 +549,7 @@ window.openFolder=function(id){
 window.render=function(){
   updateKPIs();
   const q=(document.getElementById('search-input')?.value||'').toLowerCase().trim();
-  let filtered=activities.filter(a=>{
+  const filtered=activities.filter(a=>{
     const mF=currentFilter==='todas'||a.status===currentFilter;
     const mFol=!currentFolder||a.folderId===currentFolder;
     const mS=!q||a.titulo.toLowerCase().includes(q)||(a.resp||'').toLowerCase().includes(q)||(a.area||'').toLowerCase().includes(q);
@@ -513,8 +561,10 @@ window.render=function(){
 }
 
 function cardHTML(a){
-  const f=getFolder(a.folderId);
-  const od=isOverdue(a);
+  const f=getFolder(a.folderId), od=isOverdue(a);
+  const prog=effectiveProg(a);
+  const steps=a.steps||[];
+  const doneSteps=steps.filter(s=>s.done).length;
   return`<div class="act-card${selectedId===a.id?' selected':''}" onclick="selectCard('${a.id}')">
     ${f?`<div class="folder-tag" style="background:${f.color}22;color:${f.color}"><i class="ti ti-folder" style="font-size:10px"></i>${f.name}</div>`:''}
     <div class="act-card-top">
@@ -526,7 +576,8 @@ function cardHTML(a){
       ${a.area?`<span class="meta-item"><i class="ti ti-building"></i>${a.area}</span>`:''}
       ${a.prazo?`<span class="meta-item"><i class="ti ti-calendar"></i>${fmtDate(a.prazo)} ${a.prazoHora||'23:59'}</span>`:''}
     </div>
-    ${a.prog>0?`<div class="progress-bar"><div class="progress-fill" style="width:${a.prog}%;background:${progColor(a.status)}"></div></div>`:''}
+    ${steps.length?`<div class="steps-mini">${steps.map(s=>`<div class="step-mini-dot${s.done?' done':''}" title="${s.label}"></div>`).join('')}<span class="steps-mini-label">${doneSteps}/${steps.length}</span></div>`:''}
+    ${prog>0?`<div class="progress-bar"><div class="progress-fill" style="width:${prog}%;background:${progColor(a.status)}"></div></div>`:''}
   </div>`;
 }
 
@@ -544,20 +595,25 @@ function renderBoard(filtered){
     board.appendChild(wrap);
   });
 }
-
 function renderList(filtered){
   const lv=document.getElementById('list-view');
   if(!filtered.length){lv.innerHTML='<div style="text-align:center;padding:40px;color:var(--text-tertiary)">Nenhuma atividade encontrada</div>';return;}
-  lv.innerHTML=`<table class="activity-table"><thead><tr><th>Atividade</th><th>Responsável</th><th>Área</th><th>Pasta</th><th>Status</th><th>Prioridade</th><th>Prazo</th><th>Progresso</th></tr></thead><tbody>
-  ${filtered.map(a=>{const f=getFolder(a.folderId);const od=isOverdue(a);return`<tr onclick="selectCard('${a.id}')">
-    <td style="font-weight:500;max-width:180px">${a.titulo}${od?'<span class="overdue-tag">Atrasada</span>':''}</td>
-    <td>${a.resp||'—'}</td><td>${a.area||'—'}</td>
-    <td>${f?`<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px"><span style="width:8px;height:8px;border-radius:50%;background:${f.color};display:inline-block"></span>${f.name}</span>`:'—'}</td>
-    <td>${statusBadge(a.status)}</td>
-    <td><span class="badge-priority ${priClass(a.prioridade)}">${a.prioridade}</span></td>
-    <td style="font-family:var(--mono);font-size:12px;white-space:nowrap">${fmtDeadline(a)}</td>
-    <td><div style="display:flex;align-items:center;gap:8px;min-width:100px"><div class="progress-bar" style="flex:1;height:5px"><div class="progress-fill" style="width:${a.prog}%;background:${progColor(a.status)}"></div></div><span style="font-size:11px;font-family:var(--mono);color:var(--text-secondary)">${a.prog}%</span></div></td>
-  </tr>`;}).join('')}</tbody></table>`;
+  lv.innerHTML=`<table class="activity-table"><thead><tr><th>Atividade</th><th>Responsável</th><th>Área</th><th>Pasta</th><th>Status</th><th>Prioridade</th><th>Prazo</th><th>Etapas</th><th>Progresso</th></tr></thead><tbody>
+  ${filtered.map(a=>{
+    const f=getFolder(a.folderId),od=isOverdue(a);
+    const prog=effectiveProg(a);
+    const steps=a.steps||[];
+    return`<tr onclick="selectCard('${a.id}')">
+      <td style="font-weight:500;max-width:180px">${a.titulo}${od?'<span class="overdue-tag">Atrasada</span>':''}</td>
+      <td>${a.resp||'—'}</td><td>${a.area||'—'}</td>
+      <td>${f?`<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px"><span style="width:8px;height:8px;border-radius:50%;background:${f.color};display:inline-block"></span>${f.name}</span>`:'—'}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td><span class="badge-priority ${priClass(a.prioridade)}">${a.prioridade}</span></td>
+      <td style="font-family:var(--mono);font-size:12px;white-space:nowrap">${fmtDeadline(a)}</td>
+      <td style="font-size:12px;white-space:nowrap">${steps.length?`${steps.filter(s=>s.done).length}/${steps.length}`:'—'}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;min-width:90px"><div class="progress-bar" style="flex:1;height:5px"><div class="progress-fill" style="width:${prog}%;background:${progColor(a.status)}"></div></div><span style="font-size:11px;font-family:var(--mono);color:var(--text-secondary)">${prog}%</span></div></td>
+    </tr>`;
+  }).join('')}</tbody></table>`;
 }
 
 // ── DETAIL ─────────────────────────────────────────────────────────────────
@@ -578,6 +634,10 @@ function renderDetail(){
   if(!selectedId)return;
   const a=activities.find(x=>x.id===selectedId); if(!a)return;
   const f=getFolder(a.folderId);
+  const prog=effectiveProg(a);
+  const steps=a.steps||[];
+  const hasSteps=steps.length>0;
+
   document.getElementById('dp-title').textContent=a.titulo;
   document.getElementById('dp-badge').innerHTML=`${statusBadge(a.status)}<span class="badge-priority ${priClass(a.prioridade)}" style="margin-left:6px">${a.prioridade}</span>${f?`<span class="folder-tag" style="background:${f.color}22;color:${f.color};margin-left:6px"><i class="ti ti-folder" style="font-size:10px"></i>${f.name}</span>`:''}`;
   document.getElementById('dp-desc').textContent=a.desc||'Sem descrição.';
@@ -587,12 +647,94 @@ function renderDetail(){
     <div class="detail-field"><label>Área / Setor</label><span>${a.area||'—'}</span></div>
     <div class="detail-field"><label>Data de início</label><span>${fmtDate(a.inicio)}</span></div>
     <div class="detail-field"><label>Prazo</label><span style="${od?'color:var(--red);font-weight:600':''}">${fmtDeadline(a)}${od?' ⚠':''}</span></div>`;
+
   const pf=document.getElementById('dp-prog-fill');
-  pf.style.width=a.prog+'%'; pf.style.background=progColor(a.status);
-  document.getElementById('dp-prog-val').textContent=a.prog+'%';
+  pf.style.width=prog+'%'; pf.style.background=progColor(a.status);
+  document.getElementById('dp-prog-val').textContent=prog+'%';
+  document.getElementById('dp-auto-badge').innerHTML=hasSteps?'<div class="auto-badge"><i class="ti ti-cpu" style="font-size:11px"></i>Calculado pelas etapas</div>':'';
+
+  // STEPS INFO
+  if(hasSteps){
+    const totalW=steps.reduce((s,e)=>s+(e.weight||1),0);
+    const doneW=steps.filter(e=>e.done).reduce((s,e)=>s+(e.weight||1),0);
+    document.getElementById('dp-steps-info').innerHTML=`<strong>${steps.filter(s=>s.done).length}/${steps.length}</strong> concluídas · peso ${doneW}/${totalW}`;
+  } else {
+    document.getElementById('dp-steps-info').innerHTML='';
+  }
+
+  // STEPS LIST
+  const list=document.getElementById('dp-steps-list');
+  list.innerHTML=steps.length?steps.map((s,i)=>`
+    <div class="step-item">
+      <div class="step-check${s.done?' done':''}" onclick="toggleStep('${a.id}',${i})"></div>
+      <span class="step-label${s.done?' done':''}">${s.label}</span>
+      <span class="step-weight" title="Peso">×${s.weight||1}</span>
+      <button class="step-del" onclick="deleteStep('${a.id}',${i})" title="Remover"><i class="ti ti-x"></i></button>
+    </div>`).join('')
+    :'<div class="steps-empty">Nenhuma etapa ainda. Adicione etapas para acompanhar o progresso automaticamente.</div>';
+
   document.getElementById('dp-move-btns').innerHTML=COLS.filter(c=>c.key!==a.status).map(c=>`<button class="move-btn" onclick="moveCard('${a.id}','${c.key}')"><i class="ti ${c.icon}"></i>${c.key}</button>`).join('');
   document.getElementById('btn-edit-detail').onclick=()=>openModal(selectedId);
   document.getElementById('btn-delete-detail').onclick=()=>confirmDelete(selectedId);
+}
+
+// ── STEPS CRUD ─────────────────────────────────────────────────────────────
+window.showAddStepRow=function(){
+  document.getElementById('add-step-row').style.display='flex';
+  document.getElementById('new-step-label').focus();
+}
+window.hideAddStepRow=function(){
+  document.getElementById('add-step-row').style.display='none';
+  document.getElementById('new-step-label').value='';
+  document.getElementById('new-step-weight').value='1';
+}
+
+window.saveNewStep=async function(){
+  const label=document.getElementById('new-step-label').value.trim();
+  if(!label)return;
+  const weight=Math.max(1,parseInt(document.getElementById('new-step-weight').value)||1);
+  const a=activities.find(x=>x.id===selectedId); if(!a)return;
+  const steps=[...(a.steps||[]),{label,weight,done:false}];
+  setSyncStatus('syncing');
+  await updateDoc(doc(db,"atividades",selectedId),{steps});
+  setSyncStatus('ok');
+  hideAddStepRow();
+  showToast('Etapa adicionada');
+}
+
+window.toggleStep=async function(id,idx){
+  const a=activities.find(x=>x.id===id); if(!a)return;
+  const steps=a.steps.map((s,i)=>i===idx?{...s,done:!s.done}:s);
+  const newProg=calcProgFromSteps(steps);
+
+  // Auto-concluir: se todas as etapas concluídas → status Concluído
+  const allDone=steps.every(s=>s.done);
+  const update={steps};
+  if(allDone && a.status!=='Concluído'){
+    update.status='Concluído';
+    update.prog=100;
+    showToast('✅ Atividade concluída automaticamente!');
+  } else if(!allDone && a.status==='Concluído' && (a.steps||[]).length>0){
+    // Se desmarcou uma etapa e estava concluída → volta para Em andamento
+    update.status='Em andamento';
+  }
+  if(newProg!==null) update.prog=newProg;
+
+  setSyncStatus('syncing');
+  await updateDoc(doc(db,"atividades",id),update);
+  setSyncStatus('ok');
+}
+
+window.deleteStep=async function(id,idx){
+  const a=activities.find(x=>x.id===id); if(!a)return;
+  const steps=a.steps.filter((_,i)=>i!==idx);
+  const newProg=calcProgFromSteps(steps);
+  const update={steps};
+  if(newProg!==null) update.prog=newProg;
+  setSyncStatus('syncing');
+  await updateDoc(doc(db,"atividades",id),update);
+  setSyncStatus('ok');
+  showToast('Etapa removida');
 }
 
 // ── CRUD ATIVIDADES ────────────────────────────────────────────────────────
@@ -618,7 +760,7 @@ window.openModal=function(id){
     document.getElementById('f-prazo').value=a.prazo||'';
     document.getElementById('f-prazo-hora').value=a.prazoHora||'23:59';
     document.getElementById('f-folder').value=a.folderId||'';
-    document.getElementById('f-prog').value=a.prog;
+    document.getElementById('f-prog').value=a.prog||0;
   }else{
     ['f-titulo','f-desc','f-resp','f-area','f-inicio','f-prazo'].forEach(i=>document.getElementById(i).value='');
     document.getElementById('f-status').value='Pendente';
@@ -634,17 +776,21 @@ window.closeModal=function(){document.getElementById('modal-overlay').classList.
 window.saveActivity=async function(){
   const titulo=document.getElementById('f-titulo').value.trim();
   if(!titulo){document.getElementById('f-titulo').focus();return;}
+  const manualProg=Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0));
+  let status=document.getElementById('f-status').value;
+  // Auto-concluir se prog manual = 100 e sem etapas
+  if(manualProg===100 && status!=='Arquivado') status='Concluído';
   const data={
     titulo,desc:document.getElementById('f-desc').value.trim(),
     resp:document.getElementById('f-resp').value.trim(),
     area:document.getElementById('f-area').value.trim(),
-    status:document.getElementById('f-status').value,
+    status,
     prioridade:document.getElementById('f-prioridade').value,
     inicio:document.getElementById('f-inicio').value,
     prazo:document.getElementById('f-prazo').value,
     prazoHora:document.getElementById('f-prazo-hora').value||'23:59',
     folderId:document.getElementById('f-folder').value||null,
-    prog:Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0)),
+    prog:manualProg,
   };
   setSyncStatus('syncing');
   if(editingId){await updateDoc(doc(db,"atividades",editingId),data);showToast('Atividade atualizada');}
@@ -669,18 +815,11 @@ function buildColorPicker(){
     `<div class="color-opt${c===selectedColor?' selected':''}" style="background:${c}" data-color="${c}" onclick="selectColor(this)"></div>`
   ).join('');
 }
-
 window.openFolderModal=function(id){
   editingFolderId=id||null;
   document.getElementById('folder-modal-title').textContent=id?'Editar pasta':'Nova pasta';
-  if(id){
-    const f=getFolder(id);
-    document.getElementById('f-folder-name').value=f.name;
-    selectedColor=f.color;
-  }else{
-    document.getElementById('f-folder-name').value='';
-    selectedColor='#1a6bdc';
-  }
+  if(id){const f=getFolder(id);document.getElementById('f-folder-name').value=f.name;selectedColor=f.color;}
+  else{document.getElementById('f-folder-name').value='';selectedColor='#1a6bdc';}
   buildColorPicker();
   document.getElementById('folder-modal-overlay').classList.add('open');
 }
@@ -737,8 +876,13 @@ window.setView=function(v){
 
 // ── EXPORT ─────────────────────────────────────────────────────────────────
 window.exportCSV=function(){
-  const header=['Título','Descrição','Responsável','Área','Pasta','Status','Prioridade','Início','Prazo','Horário','Progresso'];
-  const rows=activities.map(a=>{const f=getFolder(a.folderId);return[`"${a.titulo}"`,`"${a.desc||''}"`,`"${a.resp||''}"`,`"${a.area||''}"`,`"${f?f.name:''}"`,a.status,a.prioridade,a.inicio||'',a.prazo||'',a.prazoHora||'23:59',a.prog+'%'];});
+  const header=['Título','Responsável','Área','Pasta','Status','Prioridade','Início','Prazo','Horário','Progresso','Etapas concluídas','Total etapas'];
+  const rows=activities.map(a=>{
+    const f=getFolder(a.folderId);
+    const steps=a.steps||[];
+    const prog=effectiveProg(a);
+    return[`"${a.titulo}"`,`"${a.resp||''}"`,`"${a.area||''}"`,`"${f?f.name:''}"`,a.status,a.prioridade,a.inicio||'',a.prazo||'',a.prazoHora||'23:59',prog+'%',steps.filter(s=>s.done).length,steps.length];
+  });
   const csv=[header,...rows].map(r=>r.join(';')).join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const el=document.createElement('a');el.href=URL.createObjectURL(blob);el.download='atividades.csv';el.click();
@@ -751,11 +895,11 @@ window.showToast=function(msg){
   const t=document.getElementById('toast');
   document.getElementById('toast-msg').textContent=msg;
   t.classList.add('show'); clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeModal();closeFolderModal();closeDetail();document.getElementById('confirm-box').classList.remove('open');}
+  if(e.key==='Escape'){closeModal();closeFolderModal();closeDetail();document.getElementById('confirm-box').classList.remove('open');hideAddStepRow();}
   if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('search-input').focus();}
 });
 document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
