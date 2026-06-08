@@ -8,8 +8,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css"/>
 <style>
-:root{
+/* Quill overrides */
+.ql-toolbar{border-radius:8px 8px 0 0 !important;border-color:var(--border) !important;background:var(--bg);font-family:var(--font);}
+.ql-container{border-radius:0 0 8px 8px !important;border-color:var(--border) !important;font-family:var(--font);font-size:13px;min-height:90px;}
+.ql-editor{min-height:80px;padding:10px 12px;}
+.ql-editor.ql-blank::before{color:var(--text-tertiary);font-style:normal;}
+.ql-toolbar.ql-snow .ql-formats{margin-right:8px;}
+</style>
   --blue:#1a6bdc;--blue-light:#e8f0fd;--amber:#d97706;--amber-light:#fef3c7;
   --green:#16a34a;--green-light:#dcfce7;--gray:#6b7280;--gray-light:#f3f4f6;
   --red:#dc2626;--red-light:#fee2e2;
@@ -241,6 +248,13 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:500;z-index:200;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(8px);transition:all .25s;display:flex;align-items:center;gap:8px;}
 .toast.show{opacity:1;transform:translateY(0);}
 
+/* DRAG & DROP STEPS */
+.step-drag-handle{color:var(--text-tertiary);cursor:grab;font-size:14px;flex-shrink:0;opacity:0;transition:opacity .15s;}
+.step-item:hover .step-drag-handle{opacity:1;}
+.step-item.dragging{opacity:.4;background:var(--blue-light);}
+.step-item.drag-over{border-color:var(--blue);border-style:dashed;background:var(--blue-light);}
+.step-inline-input{border:1px solid var(--blue);border-radius:5px;padding:2px 7px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--surface);outline:none;width:100%;}
+
 /* DONE PANEL */
 .done-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;margin-bottom:10px;transition:background .15s;}
 .done-toggle:hover{background:var(--bg);}
@@ -353,7 +367,6 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
       <div class="steps-list" id="dp-steps-list"></div>
       <div id="add-step-row" style="display:none" class="add-step-row">
         <input class="add-step-input" id="new-step-label" placeholder="Nome da etapa..." onkeydown="if(event.key==='Enter')saveNewStep()"/>
-        <input class="add-step-weight" id="new-step-weight" type="number" min="1" max="100" value="1" title="Peso"/>
         <button class="btn-step-save" onclick="saveNewStep()">OK</button>
         <button class="btn-step-cancel" onclick="hideAddStepRow()">✕</button>
       </div>
@@ -367,7 +380,7 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
   <div class="modal">
     <div class="modal-head"><h2 id="modal-title">Nova atividade</h2><button class="btn-sm" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
     <div class="form-group"><label>Título da atividade *</label><input type="text" id="f-titulo" placeholder="Ex: Relatório mensal de KPIs"/></div>
-    <div class="form-group"><label>Descrição</label><textarea id="f-desc" placeholder="Descreva a demanda em detalhes..."></textarea></div>
+    <div class="form-group"><label>Descrição</label><div id="f-desc-editor" style="background:var(--surface)"></div></div>
     <div class="form-row">
       <div class="form-group"><label>Responsável</label><input type="text" id="f-resp" placeholder="Nome do responsável"/></div>
       <div class="form-group"><label>Área / Setor</label><input type="text" id="f-area" placeholder="Ex: TI, RH, Financeiro"/></div>
@@ -388,7 +401,6 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
       <div class="form-group">
         <label>Progresso (%)</label>
         <input type="number" id="f-prog" min="0" max="100" value="0"/>
-        <div class="form-info"><i class="ti ti-info-circle"></i>Calculado automaticamente se houver etapas</div>
       </div>
     </div>
     <div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveActivity()">Salvar atividade</button></div>
@@ -417,6 +429,7 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 </div>
 <div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,collection,onSnapshot,addDoc,updateDoc,deleteDoc,doc,serverTimestamp,query,orderBy}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -432,6 +445,18 @@ const app=initializeApp({
 const db=getFirestore(app);
 const actCol=collection(db,"atividades");
 const folCol=collection(db,"pastas");
+
+// ── QUILL RICH TEXT ────────────────────────────────────────────────────────
+const quill=new Quill('#f-desc-editor',{
+  theme:'snow',
+  placeholder:'Descreva a demanda em detalhes...',
+  modules:{toolbar:[
+    ['bold','italic','underline','strike'],
+    [{list:'ordered'},{list:'bullet'}],
+    [{color:[]},{background:[]}],
+    ['clean']
+  ]}
+});
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activities=[], folders=[];
@@ -488,19 +513,8 @@ function fmtDeadline(a){
   return`${fmtDate(a.prazo)} ${a.prazoHora||'23:59'}`;
 }
 
-// ── STEPS: calcula progresso ponderado ────────────────────────────────────
-function calcProgFromSteps(steps){
-  if(!steps||!steps.length) return null; // sem etapas → usa prog manual
-  const totalWeight=steps.reduce((s,e)=>s+(e.weight||1),0);
-  const doneWeight=steps.filter(e=>e.done).reduce((s,e)=>s+(e.weight||1),0);
-  return totalWeight===0?0:Math.round((doneWeight/totalWeight)*100);
-}
-
-// Retorna progresso efetivo (etapas se existir, senão manual)
-function effectiveProg(a){
-  const fromSteps=calcProgFromSteps(a.steps);
-  return fromSteps!==null?fromSteps:(a.prog||0);
-}
+// Progresso sempre manual
+function effectiveProg(a){ return a.prog||0; }
 
 // ── KPIs ───────────────────────────────────────────────────────────────────
 function updateKPIs(){
@@ -741,7 +755,7 @@ function renderDetail(){
 
   document.getElementById('dp-title').textContent=a.titulo;
   document.getElementById('dp-badge').innerHTML=`${statusBadge(a.status)}<span class="badge-priority ${priClass(a.prioridade)}" style="margin-left:6px">${a.prioridade}</span>${f?`<span class="folder-tag" style="background:${f.color}22;color:${f.color};margin-left:6px"><i class="ti ti-folder" style="font-size:10px"></i>${f.name}</span>`:''}`;
-  document.getElementById('dp-desc').textContent=a.desc||'Sem descrição.';
+  document.getElementById('dp-desc').innerHTML=a.desc||'<em style="color:var(--text-tertiary)">Sem descrição.</em>';
   const od=isOverdue(a);
   document.getElementById('dp-grid').innerHTML=`
     <div class="detail-field"><label>Responsável</label><span>${a.resp||'—'}</span></div>
@@ -752,27 +766,42 @@ function renderDetail(){
   const pf=document.getElementById('dp-prog-fill');
   pf.style.width=prog+'%'; pf.style.background=progColor(a.status);
   document.getElementById('dp-prog-val').textContent=prog+'%';
-  document.getElementById('dp-auto-badge').innerHTML=hasSteps?'<div class="auto-badge"><i class="ti ti-cpu" style="font-size:11px"></i>Calculado pelas etapas</div>':'';
+  document.getElementById('dp-auto-badge').innerHTML='';
 
   // STEPS INFO
   if(hasSteps){
-    const totalW=steps.reduce((s,e)=>s+(e.weight||1),0);
-    const doneW=steps.filter(e=>e.done).reduce((s,e)=>s+(e.weight||1),0);
-    document.getElementById('dp-steps-info').innerHTML=`<strong>${steps.filter(s=>s.done).length}/${steps.length}</strong> concluídas · peso ${doneW}/${totalW}`;
+    document.getElementById('dp-steps-info').innerHTML=`<strong>${steps.filter(s=>s.done).length}/${steps.length}</strong> concluídas`;
   } else {
     document.getElementById('dp-steps-info').innerHTML='';
   }
 
-  // STEPS LIST
+  // STEPS LIST — drag-drop + inline edit
   const list=document.getElementById('dp-steps-list');
-  list.innerHTML=steps.length?steps.map((s,i)=>`
-    <div class="step-item">
-      <div class="step-check${s.done?' done':''}" onclick="toggleStep('${a.id}',${i})"></div>
-      <span class="step-label${s.done?' done':''}">${s.label}</span>
-      <span class="step-weight" title="Peso">×${s.weight||1}</span>
-      <button class="step-del" onclick="deleteStep('${a.id}',${i})" title="Remover"><i class="ti ti-x"></i></button>
-    </div>`).join('')
-    :'<div class="steps-empty">Nenhuma etapa ainda. Adicione etapas para acompanhar o progresso automaticamente.</div>';
+  if(!steps.length){
+    list.innerHTML='<div class="steps-empty">Nenhuma etapa ainda. Clique em "+ Adicionar" para começar.</div>';
+  } else {
+    list.innerHTML='';
+    steps.forEach((s,i)=>{
+      const item=document.createElement('div');
+      item.className='step-item'; item.draggable=true; item.dataset.idx=i;
+      item.innerHTML=`
+        <div class="step-drag-handle" title="Arrastar para reordenar"><i class="ti ti-grip-vertical"></i></div>
+        <div class="step-check${s.done?' done':''}" onclick="toggleStep('${a.id}',${i})"></div>
+        <span class="step-label${s.done?' done':''}" ondblclick="startEditStep(this,'${a.id}',${i})">${s.label.replace(/</g,'&lt;')}</span>
+        <button class="step-del" onclick="deleteStep('${a.id}',${i})" title="Remover"><i class="ti ti-x"></i></button>`;
+      item.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='move';window._dragIdx=i;item.classList.add('dragging');});
+      item.addEventListener('dragend',()=>{item.classList.remove('dragging');list.querySelectorAll('.step-item').forEach(el=>el.classList.remove('drag-over'));});
+      item.addEventListener('dragover',e=>{e.preventDefault();list.querySelectorAll('.step-item').forEach(el=>el.classList.remove('drag-over'));item.classList.add('drag-over');});
+      item.addEventListener('drop',async e=>{
+        e.preventDefault(); item.classList.remove('drag-over');
+        const from=window._dragIdx, to=i; if(from===to||from==null)return;
+        const cur=activities.find(x=>x.id===selectedId); if(!cur)return;
+        const arr=[...cur.steps]; const[moved]=arr.splice(from,1); arr.splice(to,0,moved);
+        setSyncStatus('syncing'); await updateDoc(doc(db,"atividades",selectedId),{steps:arr}); setSyncStatus('ok'); window._dragIdx=null;
+      });
+      list.appendChild(item);
+    });
+  }
 
   document.getElementById('dp-move-btns').innerHTML=COLS.filter(c=>c.key!==a.status).map(c=>`<button class="move-btn" onclick="moveCard('${a.id}','${c.key}')"><i class="ti ${c.icon}"></i>${c.key}</button>`).join('');
   document.getElementById('btn-edit-detail').onclick=()=>openModal(selectedId);
@@ -787,15 +816,13 @@ window.showAddStepRow=function(){
 window.hideAddStepRow=function(){
   document.getElementById('add-step-row').style.display='none';
   document.getElementById('new-step-label').value='';
-  document.getElementById('new-step-weight').value='1';
 }
 
 window.saveNewStep=async function(){
   const label=document.getElementById('new-step-label').value.trim();
   if(!label)return;
-  const weight=Math.max(1,parseInt(document.getElementById('new-step-weight').value)||1);
   const a=activities.find(x=>x.id===selectedId); if(!a)return;
-  const steps=[...(a.steps||[]),{label,weight,done:false}];
+  const steps=[...(a.steps||[]),{label,done:false}];
   setSyncStatus('syncing');
   await updateDoc(doc(db,"atividades",selectedId),{steps});
   setSyncStatus('ok');
@@ -806,39 +833,38 @@ window.saveNewStep=async function(){
 window.toggleStep=async function(id,idx){
   const a=activities.find(x=>x.id===id); if(!a)return;
   const steps=a.steps.map((s,i)=>i===idx?{...s,done:!s.done}:s);
-  const newProg=calcProgFromSteps(steps);
-
-  // Auto-concluir: se todas as etapas concluídas → status Concluído
-  const allDone=steps.every(s=>s.done);
-  const update={steps};
-  if(allDone && a.status!=='Concluído'){
-    update.status='Concluído';
-    update.prog=100;
-    showToast('✅ Atividade concluída automaticamente!');
-  } else if(!allDone && a.status==='Concluído' && (a.steps||[]).length>0){
-    // Se desmarcou uma etapa e estava concluída → volta para Em andamento
-    update.status='Em andamento';
-  }
-  if(newProg!==null) update.prog=newProg;
-
   setSyncStatus('syncing');
-  await updateDoc(doc(db,"atividades",id),update);
+  await updateDoc(doc(db,"atividades",id),{steps});
   setSyncStatus('ok');
 }
 
 window.deleteStep=async function(id,idx){
   const a=activities.find(x=>x.id===id); if(!a)return;
   const steps=a.steps.filter((_,i)=>i!==idx);
-  const newProg=calcProgFromSteps(steps);
-  const update={steps};
-  if(newProg!==null) update.prog=newProg;
   setSyncStatus('syncing');
-  await updateDoc(doc(db,"atividades",id),update);
+  await updateDoc(doc(db,"atividades",id),{steps});
   setSyncStatus('ok');
   showToast('Etapa removida');
 }
 
-// ── CRUD ATIVIDADES ────────────────────────────────────────────────────────
+// ── STEP INLINE EDIT ───────────────────────────────────────────────────────
+function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+window.startEditStep=function(span,actId,idx){
+  if(span.querySelector('input'))return;
+  const orig=span.textContent;
+  span.innerHTML=`<input class="step-inline-input" value="${orig.replace(/"/g,'&quot;')}" />`;
+  const inp=span.querySelector('input');
+  inp.focus(); inp.select();
+  const commit=async()=>{
+    const val=inp.value.trim()||orig;
+    const a=activities.find(x=>x.id===actId); if(!a)return;
+    const steps=a.steps.map((s,i)=>i===idx?{...s,label:val}:s);
+    setSyncStatus('syncing'); await updateDoc(doc(db,"atividades",actId),{steps}); setSyncStatus('ok');
+  };
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();inp.blur();} if(e.key==='Escape'){span.textContent=orig;} });
+}
 window.moveCard=async function(id,status){
   setSyncStatus('syncing');
   await updateDoc(doc(db,"atividades",id),{status,...(status==='Concluído'?{prog:100}:{})});
@@ -852,7 +878,7 @@ window.openModal=function(id){
   if(id){
     const a=activities.find(x=>x.id===id);
     document.getElementById('f-titulo').value=a.titulo;
-    document.getElementById('f-desc').value=a.desc||'';
+    quill.root.innerHTML=a.desc||'';
     document.getElementById('f-resp').value=a.resp||'';
     document.getElementById('f-area').value=a.area||'';
     document.getElementById('f-status').value=a.status;
@@ -863,8 +889,8 @@ window.openModal=function(id){
     document.getElementById('f-folder').value=a.folderId||'';
     document.getElementById('f-prog').value=a.prog||0;
   }else{
-    ['f-titulo','f-desc','f-resp','f-area','f-inicio','f-prazo'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('f-status').value='Pendente';
+    ['f-titulo','f-resp','f-area','f-inicio','f-prazo'].forEach(i=>document.getElementById(i).value='');
+    quill.setText('');    document.getElementById('f-status').value='Pendente';
     document.getElementById('f-prioridade').value='Média';
     document.getElementById('f-prazo-hora').value='23:59';
     document.getElementById('f-prog').value=0;
@@ -877,12 +903,13 @@ window.closeModal=function(){document.getElementById('modal-overlay').classList.
 window.saveActivity=async function(){
   const titulo=document.getElementById('f-titulo').value.trim();
   if(!titulo){document.getElementById('f-titulo').focus();return;}
+  const descHtml=quill.getText().trim()?quill.root.innerHTML:'';
   const manualProg=Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0));
   let status=document.getElementById('f-status').value;
   // Auto-concluir se prog manual = 100 e sem etapas
   if(manualProg===100 && status!=='Arquivado') status='Concluído';
   const data={
-    titulo,desc:document.getElementById('f-desc').value.trim(),
+    titulo,desc:descHtml,
     resp:document.getElementById('f-resp').value.trim(),
     area:document.getElementById('f-area').value.trim(),
     status,
