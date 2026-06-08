@@ -241,8 +241,15 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:500;z-index:200;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(8px);transition:all .25s;display:flex;align-items:center;gap:8px;}
 .toast.show{opacity:1;transform:translateY(0);}
 
-@media(max-width:900px){.sidebar{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.board{grid-template-columns:repeat(2,1fr);}.detail-panel{width:100%;}}
-@media(max-width:600px){.content{padding:14px;}.topbar{padding:0 14px;}.board{grid-template-columns:1fr;}}
+/* DONE PANEL */
+.done-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;margin-bottom:10px;transition:background .15s;}
+.done-toggle:hover{background:var(--bg);}
+.done-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.act-card-done{opacity:.7;transition:opacity .15s;}
+.act-card-done:hover{opacity:1;}
+
+@media(max-width:900px){.sidebar{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.board{grid-template-columns:repeat(2,1fr);}.detail-panel{width:100%;}.done-cols{grid-template-columns:1fr;}}
+@media(max-width:600px){.content{padding:14px;}.topbar{padding:0 14px;}.board{grid-template-columns:1fr;}.done-cols{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -291,7 +298,8 @@ table.activity-table tr:hover td{background:var(--bg);cursor:pointer;}
       <div class="kpi-grid" id="kpi-grid"></div>
       <div class="board-controls">
         <div class="filter-pills">
-          <button class="pill active" onclick="setFilter('todas',this)"><i class="ti ti-layout-grid"></i>Todas</button>
+          <button class="pill" onclick="setFilter('todas',this)"><i class="ti ti-layout-grid"></i>Todas</button>
+          <button class="pill active" onclick="setFilter('ativas',this)"><i class="ti ti-bolt"></i>Ativas</button>
           <button class="pill" onclick="setFilter('Em andamento',this)"><i class="ti ti-loader"></i>Em andamento</button>
           <button class="pill" onclick="setFilter('Pendente',this)"><i class="ti ti-clock"></i>Pendente</button>
           <button class="pill" onclick="setFilter('Concluído',this)"><i class="ti ti-circle-check"></i>Concluído</button>
@@ -427,7 +435,7 @@ const folCol=collection(db,"pastas");
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activities=[], folders=[];
-let currentFilter='todas', currentView='board', currentFolder=null;
+let currentFilter='ativas', currentView='board', currentFolder=null;
 let selectedId=null, editingId=null, editingFolderId=null, selectedColor='#1a6bdc';
 const FOLDER_COLORS=['#1a6bdc','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#ea580c','#65a30d','#374151'];
 
@@ -536,7 +544,7 @@ function renderFolderSelect(){
   if(cur)sel.value=cur;
 }
 window.openFolder=function(id){
-  currentFolder=id; currentFilter='todas';
+  currentFolder=id; currentFilter='ativas';
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
   document.querySelector('.pill').classList.add('active');
@@ -549,14 +557,16 @@ window.openFolder=function(id){
 window.render=function(){
   updateKPIs();
   const q=(document.getElementById('search-input')?.value||'').toLowerCase().trim();
-  const filtered=activities.filter(a=>{
-    const mF=currentFilter==='todas'||a.status===currentFilter;
-    const mFol=!currentFolder||a.folderId===currentFolder;
-    const mS=!q||a.titulo.toLowerCase().includes(q)||(a.resp||'').toLowerCase().includes(q)||(a.area||'').toLowerCase().includes(q);
-    return mF&&mFol&&mS;
-  });
+  const matchSearch=a=>!q||a.titulo.toLowerCase().includes(q)||(a.resp||'').toLowerCase().includes(q)||(a.area||'').toLowerCase().includes(q);
+  const matchFolder=a=>!currentFolder||a.folderId===currentFolder;
+  const matchFilter=a=>{
+    if(currentFilter==='todas') return true;
+    if(currentFilter==='ativas') return a.status==='Em andamento'||a.status==='Pendente';
+    return a.status===currentFilter;
+  };
+  const filtered=activities.filter(a=>matchFilter(a)&&matchFolder(a)&&matchSearch(a));
   if(currentView==='list')renderList(filtered);
-  else renderBoard(filtered);
+  else renderBoard(filtered,activities.filter(a=>matchFolder(a)&&matchSearch(a)));
   if(selectedId)renderDetail();
 }
 
@@ -581,19 +591,110 @@ function cardHTML(a){
   </div>`;
 }
 
-function renderBoard(filtered){
+function renderBoard(filtered, allVisible){
   const board=document.getElementById('board');
-  const cols=currentFilter==='todas'?COLS:COLS.filter(c=>c.key===currentFilter);
-  board.style.gridTemplateColumns=`repeat(${Math.min(cols.length,4)},1fr)`;
   board.innerHTML='';
-  cols.forEach(col=>{
+
+  // Determine which active cols to show
+  const ACTIVE_COLS=[
+    {key:'Em andamento',dot:'#1a6bdc',icon:'ti-loader'},
+    {key:'Pendente',dot:'#d97706',icon:'ti-clock'},
+  ];
+  const isActivasMode=currentFilter==='ativas';
+  const isSingleStatus=!['todas','ativas'].includes(currentFilter);
+
+  let mainCols;
+  if(isSingleStatus){
+    mainCols=COLS.filter(c=>c.key===currentFilter);
+  } else if(isActivasMode){
+    mainCols=ACTIVE_COLS;
+  } else {
+    mainCols=COLS;
+  }
+
+  // Responsive columns
+  board.style.gridTemplateColumns=`repeat(${Math.min(mainCols.length,4)},1fr)`;
+
+  mainCols.forEach(col=>{
     const items=filtered.filter(a=>a.status===col.key);
+    const isActive=col.key==='Em andamento'||col.key==='Pendente';
     const wrap=document.createElement('div');
     wrap.className='col-wrap';
-    wrap.innerHTML=`<div class="col-header"><div class="col-dot" style="background:${col.dot}"></div><span class="col-name">${col.key}</span><span class="col-count">${items.length}</span></div>
+    // Active cols get slightly elevated style
+    const headerExtra=isActivasMode&&isActive?` style="border-top:2px solid ${col.dot}"`:``;
+    wrap.innerHTML=`<div class="col-header"${headerExtra}><div class="col-dot" style="background:${col.dot}"></div><span class="col-name">${col.key}</span><span class="col-count">${items.length}</span></div>
     <div class="col-body">${items.length?items.map(cardHTML).join(''):`<div class="empty-col"><i class="ti ${col.icon}"></i>Nenhuma atividade</div>`}</div>`;
     board.appendChild(wrap);
   });
+
+  // Collapsible done/archived panel — only shown in 'ativas' or 'todas' mode
+  let donePanel=document.getElementById('done-panel');
+  if(!donePanel){
+    donePanel=document.createElement('div');
+    donePanel.id='done-panel';
+    donePanel.style.cssText='grid-column:1/-1;margin-top:8px;';
+    board.parentNode.insertBefore(donePanel,board.nextSibling);
+  }
+
+  if(isSingleStatus){
+    donePanel.innerHTML='';
+    return;
+  }
+
+  const doneCols=[
+    {key:'Concluído',dot:'#16a34a',icon:'ti-circle-check'},
+    {key:'Arquivado',dot:'#6b7280',icon:'ti-archive'},
+  ];
+  const doneItems=(allVisible||filtered).filter(a=>a.status==='Concluído'||a.status==='Arquivado');
+  const doneCount=doneItems.length;
+  const isExpanded=window._donePanelOpen||false;
+
+  if(doneCount===0){donePanel.innerHTML='';return;}
+
+  donePanel.innerHTML=`
+    <div class="done-toggle" onclick="toggleDonePanel()">
+      <div style="display:flex;align-items:center;gap:10px">
+        <i class="ti ti-chevron-${isExpanded?'up':'down'}" style="font-size:14px;color:var(--text-tertiary)"></i>
+        <span style="font-size:13px;font-weight:500;color:var(--text-secondary)">Concluídas & Arquivadas</span>
+        <span style="font-size:11px;font-family:var(--mono);background:var(--gray-light);color:var(--text-tertiary);padding:1px 8px;border-radius:10px">${doneCount}</span>
+      </div>
+      <span style="font-size:11px;color:var(--text-tertiary)">${isExpanded?'Recolher':'Expandir'}</span>
+    </div>
+    ${isExpanded?`<div class="done-cols">${doneCols.map(col=>{
+      const items=(allVisible||filtered).filter(a=>a.status===col.key);
+      if(!items.length)return'';
+      return`<div class="col-wrap">
+        <div class="col-header" style="opacity:.7"><div class="col-dot" style="background:${col.dot}"></div><span class="col-name">${col.key}</span><span class="col-count">${items.length}</span></div>
+        <div class="col-body" style="opacity:.75">${items.map(a=>cardHTMLDone(a)).join('')}</div>
+      </div>`;
+    }).join('')}</div>`:''}
+  `;
+}
+
+window.toggleDonePanel=function(){
+  window._donePanelOpen=!window._donePanelOpen;
+  render();
+}
+
+// Muted card for done/archived items
+function cardHTMLDone(a){
+  const f=getFolder(a.folderId);
+  const prog=effectiveProg(a);
+  const steps=a.steps||[];
+  const doneSteps=steps.filter(s=>s.done).length;
+  return`<div class="act-card act-card-done${selectedId===a.id?' selected':''}" onclick="selectCard('${a.id}')">
+    ${f?`<div class="folder-tag" style="background:${f.color}18;color:${f.color}99"><i class="ti ti-folder" style="font-size:10px"></i>${f.name}</div>`:''}
+    <div class="act-card-top">
+      <span class="act-title" style="color:var(--text-secondary)">${a.titulo}</span>
+      <span class="badge-priority ${priClass(a.prioridade)}" style="opacity:.5">${a.prioridade}</span>
+    </div>
+    <div class="act-meta">
+      ${a.resp?`<span class="meta-item"><i class="ti ti-user"></i>${a.resp}</span>`:''}
+      ${a.prazo?`<span class="meta-item"><i class="ti ti-calendar"></i>${fmtDate(a.prazo)}</span>`:''}
+    </div>
+    ${steps.length?`<div class="steps-mini">${steps.map(s=>`<div class="step-mini-dot${s.done?' done':''}" title="${s.label}"></div>`).join('')}<span class="steps-mini-label">${doneSteps}/${steps.length}</span></div>`:''}
+    ${prog>0?`<div class="progress-bar" style="opacity:.5"><div class="progress-fill" style="width:${prog}%;background:${progColor(a.status)}"></div></div>`:''}
+  </div>`;
 }
 function renderList(filtered){
   const lv=document.getElementById('list-view');
@@ -861,7 +962,7 @@ window.navClick=function(mode,btn){
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); currentFolder=null;
   const labels={em_andamento:'Em andamento',pendente:'Pendente',concluido:'Concluído',arquivado:'Arquivado'};
-  if(mode==='board'){setFilter('todas',null);document.getElementById('page-title').textContent='Painel de Atividades';}
+  if(mode==='board'){setFilter('ativas',null);document.getElementById('page-title').textContent='Painel de Atividades';}
   else{setFilter(labels[mode],null);document.getElementById('page-title').textContent=labels[mode];}
   renderFolderNav();
 }
